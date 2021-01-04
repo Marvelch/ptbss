@@ -7,5 +7,9 @@ use App\PermintaanModel;
 
 class Product extends Model
 {
-   // kosong
+   public function Permintaan()
+   {
+      return $this->belongsTo('App\PermintaanModel');
+   }
+   
 }

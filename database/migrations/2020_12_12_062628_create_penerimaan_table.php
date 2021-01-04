@@ -17,8 +17,8 @@ class CreatePenerimaanTable extends Migration
             $table->id();
             $table->string('no_rpo', 30);
 
-            $table->string('rel_kodepermintaan');
-            $table->foreign('rel_kodepermintaan')->references('kodepermintaan')->on('permintaan');
+            // $table->string('rel_kodepermintaan');
+            // $table->foreign('rel_kodepermintaan')->references('kodepermintaan')->on('permintaan');
             
             $table->date('tanggal');
             $table->string('sales_order');

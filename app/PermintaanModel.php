@@ -17,6 +17,8 @@ class PermintaanModel extends Model
         'subtotal',
         'supplier_id',
         'product_id',
+        'diterima',
+        'sisa'
     ];
 
 }

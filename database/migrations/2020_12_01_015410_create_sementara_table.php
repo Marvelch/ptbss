@@ -17,9 +17,9 @@ class CreateSementaraTable extends Migration
         Schema::create('sementara', function (Blueprint $table) {
             $userId = Auth::id();
 
-            $table->id();
             $table->integer('idproduct')->nullable();
             $table->integer('idsupplier')->nullable();
+            $table->integer('idinvoice')->nullable();
             $table->unsignedBigInteger('iduser');
             $table->foreign('iduser')->references('id')->on('users');
             $table->timestamps();

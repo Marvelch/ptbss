@@ -43,7 +43,7 @@ Route::group(['middleware' => 'admin'], function () {
   Route::post('s_permintaan','PermintaanController@savepermintaan');
   Route::get('daftar/permintaan','PermintaanController@datapermintaan');
   Route::get('/live_search/action', 'PermintaanController@action')->name('live_search.action');
-  
+
   Route::post('/category/getCategory/','PermintaanController@getCategory')->name('category.getCategory');
 
   Route::group(['prefix' => 'Pag3'], function(){
@@ -51,16 +51,24 @@ Route::group(['middleware' => 'admin'], function () {
       Route::get('getpermintaan/{id}','PenerimaanController@getpermintaan');
       Route::get('getKodePermintaan/{id}','PenerimaanController@JsonKodePermintaan');
       Route::get('getPermintaanData/{id}','PenerimaanController@DataPermintaan');
+      Route::get('TestingPenerimaan','PenerimaanController@TestingUnit');
   });
 
   Route::group(['prefix' => 'Pag4'], function(){
       Route::resource('KartuStok','KartuStokController');
       Route::get('Print','KartuStokController@cetak');
-      Route::get('/pegawai/cetak_pdf', 'KartuStokController@cetak_pdf');
+      Route::get('/pegawai/cetak_pdf/{id}', 'KartuStokController@cetak_pdf');
+      // Route::get('Testing','KartuStokController@cetak_pdf');
   });
 
   Route::group(['prefix' => 'Pag5'], function(){
       Route::resource('SubType','SubTipeController');
+  });
+
+  Route::group(['prefix' => 'Pag6'], function(){
+    Route::resource('Invoice','InvoiceController');
+    Route::get('DeleteInvoiceHistory','InvoiceController@DeleteInvo');
+    Route::post('InvoiceTemp','InvoiceController@Store_All');
   });
 
   // Route::get('/admin/settings/findAirName','PenerimaanController@SupplierJson');
@@ -69,5 +77,4 @@ Route::group(['middleware' => 'admin'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
   Route::get('/home', 'HomeController@index')->name('home');
-
 });

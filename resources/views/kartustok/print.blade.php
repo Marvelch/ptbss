@@ -41,6 +41,7 @@
                                 <th scope="col">Kode Permintaan</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Kode Produk</th>
+                                <th scope="col">Nama Barang</th>
                                 <th scope="col">Keterangan</th>
                                 <th scope="col">Keluar</th>
                                 <th scope="col">Masuk</th>
@@ -53,10 +54,11 @@
                                 <td>{{$permintaan->kodepermintaan}}</td>
                                 <td>@php echo date("d-m-Y", strtotime($permintaan->tglpermintaan)); @endphp</td>
                                 <td>{{$prints[0]->kode}}</td>
-                                <td></td>
+                                <td>{{$prints[0]->nama}}</td>
+                                <td>// Keterangan</td>
                                 <td>{{$permintaan->dikirim}}</td>
                                 <td>{{$permintaan->diterima}}</td>
-                                <td>{{$permintaan->sisa}}</td>
+                                <td>{{$permintaan->jumlah}}</td>
                             </tr>
                         </tbody>
                         @endforeach
@@ -64,7 +66,7 @@
                     <div class="form-group">
                         <div class="d-flex">
                             <div class="p-2"><a href="{{url('/Pag4/KartuStok')}}" class="btn btn-primary">Batal</a></div>
-                            <div class="p-2"><a href="/Pag4/pegawai/cetak_pdf" class="btn btn-primary" target="_blank">Print PDF</a></div>
+                            <div class="p-2"><a href="/Pag4/pegawai/cetak_pdf/{{$prints[0]->kode}}" class="btn btn-primary" target="_blank">Print PDF</a></div>
                         </div>
                     </div>
                 </div>

@@ -38,7 +38,7 @@
                             </select>
                         </div>
                         <div class="form-group pt-3">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Print</button>
+                            <button type="submit" class="btn btn-primary">Lihat Barang</button>
                         </div>
                     </div>
                 </div>

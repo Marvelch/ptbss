@@ -13,6 +13,7 @@ class SementaraModel extends Model
         'created_at',
         'idsupplier',
         'iduser',
-        'id'
+        'id',
+        'idinvoice'
     ];
 }

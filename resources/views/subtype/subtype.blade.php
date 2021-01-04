@@ -17,11 +17,11 @@
                 <h6 class="m-0 font-weight-bold text-primary">Tambah Sub Tipe</h6>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('tipe.store')}}">
+                <form method="post" action="{{route('SubType.store')}}">
                     @csrf
                     <div class="form-group">
                         <label for="">Pilih Tipe</label>
-                        <Select class="form-control">
+                        <Select class="form-control" class="form-control" name="idtipe">
                             <option value="">Pilih</option>
                             @foreach ($SubTypes as $sub)
                                 <option value="{{$sub->id}}">{{$sub->nama}}</option>
@@ -30,7 +30,11 @@
                     </div>
                     <div class="form-group">
                         <label for="">Sub Tipe</label>
-                        <input type="text" name="namasubtipe" class="form-control">
+                        <input type="text" name="nama" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Kode</label>
+                        <input type="text" name="kode" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="">Status</label>

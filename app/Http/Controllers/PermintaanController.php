@@ -272,12 +272,9 @@ class PermintaanController extends Controller
 
         $GetProduct     =   ProductModel::all();
 
-        $Permintaan_ID = PermintaanModel::where('id',$id)->get();
-
         return view('permintaan.edit')->with('GetPermintaan',$GetPermintaan)
                                       ->with('GetSupplier',$GetSupplier)
-                                      ->with('GetProduct',$GetProduct)
-                                      ->with('Permintaan_ID',$Permintaan_ID);
+                                      ->with('GetProduct',$GetProduct);
     }
 
     /**

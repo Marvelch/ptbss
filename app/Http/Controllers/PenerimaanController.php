@@ -65,8 +65,16 @@ class PenerimaanController extends Controller
     public function DataPermintaan($id)
     {
         $DataPermintaan['data'] = PermintaanModel::where('kodepermintaan',$id)->get();
-        
-        echo json_encode($DataPermintaan);
+        $Data = PermintaanModel::where('kodepermintaan',$id)->get();
+
+        foreach($Data as $Dkey)
+        {
+            // echo $Dkey->product_id;
+            $Dkeys[]['ex'] = ProductModel::where('id',$Dkey->product_id)->get();
+        }
+
+        // return response()->json(Array($DataPermintaan,$Dkeys));
+        echo json_encode(Array($DataPermintaan,$Dkeys));
         exit;
     }
 
@@ -95,9 +103,8 @@ class PenerimaanController extends Controller
             PermintaanModel::where('id',$value->id)
                                         ->update([
                                             'status'     =>  "2",
-                                            'dikirim'    => $request->dikirim[$key],
                                             'diterima'   => $request->diterima[$key],
-                                            'sisa'       => $request->dikirim[$key] - $request->diterima[$key],
+                                            'sisa'       => $request->info[$key] - $request->diterima[$key],
                                         ]);
         }
 
@@ -173,6 +180,13 @@ class PenerimaanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function TestingUnit(Request $request)
+    {
+        $ids = PermintaanModel::where('kodepermintaan',$request->kodepermintaan)->get();
+
+        echo $ids;
     }
 
 }

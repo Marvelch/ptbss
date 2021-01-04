@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Pilih Supplier</label>
-                                    <select name="" id="select1" class="form-control">
+                                    <select name="select1" id="select1" class="form-control">
                                         <option value="">Pilih...</option>
                                         @foreach ($Suppliers as $Supplier)
                                         <option value="{{$Supplier->id}}" id="{{$Supplier->id}}">{{$Supplier->nama}}
@@ -43,13 +43,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Pilih Status</label>
-                                    <select name="" id="status" class="form-control">
-                                        <option value="">Pilih...</option>
-                                        <option value="1">Dibuat</option>
-                                        <option value="2">Proses</option>
-                                        <option value="3">Lunas</option>
-                                    </select>
+                                    <label for="">Keterangan</label>
+                                    <textarea name="alamat" id="alamat" cols="30" rows="2" class="form-control"
+                                        value=""></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Alamat</label>
@@ -76,11 +72,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">No Sales Order (SO)</label>
-                                    <input type="text" name="" id="no_so" class="form-control">
+                                    <input type="text" name="" id="no_so" autocomplete="off" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="">No Delivery Order (DO)</label>
-                                    <input type="text" name="" id="no_do" class="form-control">
+                                    <input type="text" name="" id="no_do" autocomplete="off"     class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -92,7 +88,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">No Permintaan</label>
-                                    <select name="nopermintaan" id="select2" class="form-control">
+                                    <select name="nopermintaan" id="select2" name="select2" class="form-control">
                                         <option value="">Pilih</option>
                                         @foreach ($Permintaans->unique('kodepermintaan') as $Permintaan)
                                         <option value="{{$Permintaan->kodepermintaan}}"
@@ -111,7 +107,6 @@
                                             <th scope="col">Nama Produk</th>
                                             <th scope="col">Tanggal</th>
                                             <th scope="col">Jumlah Permintaan</th>
-                                            <th scope="col">Dikirim</th>
                                             <th scope="col">Diterima</th>
                                             <th scope="col">Sisa</th>
                                         </tr>
@@ -147,7 +142,10 @@
     var jumlah;
     var supplier_id;
     var product_id;
-    var dikirim;
+    var diterima;
+    var jmlh_kirim;
+    var sisar;
+    var num = 0;
 
     $.ajaxSetup({
         headers: {
@@ -165,12 +163,12 @@
         $('#select2').html(options);
     });
 
-    $('#select2').click(function()
+    $('#select2').on('click',function()
     {
         var nilai = $(this).find('option').filter(':selected').val();
     })
 
-    $('#select2').on('click', function () {
+    $('#select2').click(function () {
         var tid = $(this).find('option').filter(':selected').val();
         
         $.ajax({
@@ -180,26 +178,26 @@
             success: function (response) {
                 var len = 0;
                 $('#userTable tbody').empty(); 
-                if (response['data'] != null) {
-                    len = response['data'].length;
+                if (response[0]['data'] != null) {
+                    len = response[0]['data'].length;
                 }
                 if (len > 0) {
                     for (var i = 0; i < len; i++) {
-                        var id = response['data'][i].id;
-                        kodepermintaan = response['data'][i].kodepermintaan;
-                        tglpermintaan = response['data'][i].tglpermintaan;
-                        jumlah = response['data'][i].jumlah;
-                        supplier_id = response['data'][i].supplier_id;
-                        nama = response['data'][i].nama;
+                        var id = response[0]['data'][i].id;
+                        kodepermintaan = response[0]['data'][i].kodepermintaan;
+                        tglpermintaan = response[0]['data'][i].tglpermintaan;
+                        jumlah = response[0]['data'][i].jumlah;
+                        nama_product = response[1][i]['ex'][0].nama;
+                        supplier_id = response[0]['data'][i].supplier_id;
+                        // nama = response[0]['data'][i].nama;
                         var tr_str = "<tr>" +
                             "<td>" + (i + 1) + "</td>" +
                             "<td>" + kodepermintaan + "</td>" +
-                            "<td>" + nama + "</td>" +
+                            "<td>" + nama_product + "</td>" +
                             "<td>" + tglpermintaan + "</td>" +
                             "<td>" + jumlah + "</td>" +
-                            "<td><input type='text' autocomplete='off' name='dikirim[]' id='dikirim[]' class='dikirim form-control'></td>" +
                             "<td><input type='text' autocomplete='off' name='diterima[]' id='diterima[]' class='diterima form-control'></td>" +
-                            "<td><input type='text' id='sisa[]' class='sisa form-control' disabled=''></td>" +
+                            "<td><input type='text' id='sisa' name='sisa"+ i + "' class='sisa form-control' disabled=''></td>" +
                             "</tr>";
                         $("#userTable tbody").append(tr_str);
                     }
@@ -221,28 +219,6 @@
         });
     });
 
-    $(document).change(function(){
-        $('input.dikirim,input.diterima').on('change keyup',function(){
-        var tr             = $(this).closest('tr'), 
-            dikirim        = tr.find('input.dikirim').val(),
-            diterima       = tr.find('input.diterima').val(),
-            sisa           = tr.find('input.sisa'),
-            grand_total    = $('#grand_total');
-
-            sisa.val(dikirim - diterima);
-
-            var grandTotal=0;
-            $('table').find('input.sisa').each(function(){
-                if(!isNaN($(this).val()))
-                    {grandTotal += parseInt($(this).val());
-                }
-            });
-            if(isNaN(grandTotal))
-            grandTotal = 0;
-            grand_total.val(grandTotal);
-        })
-    })
-
     $('#select1').on('change', function () {
         var Nilai = $(this).val();
 
@@ -254,29 +230,53 @@
         });
     });
 
-   
+    // Perhitungan jumlah sisa dan total 
+    // var i = 0;
+    
+    $('#select2').on('change',function(){
+        $(document).change(function(){
+            $('input[name^="diterima[]"]').on('change keyup',function(){
+            var tr              = $(this).closest('tr'), 
+                jmlh_kirim      = $('#userTable tr').map(function(){return $(this).find("td:eq(4)").html()}).get(),
+                diterima        = $('input[name^="diterima[]"]').map(function(){return $(this).val();}).get(),
+                grand_total     = $('#grand_total');
+
+                // Cara mengambil data dari jumlah permintaan
+                for(i=0; i < diterima.length;i++)
+                {
+                    $('input[name^="sisa'+[i]+'"]').val(jmlh_kirim[i] - diterima[i]);
+                }
+
+                // Menantukan Grand Total 
+                var grandTotal = 0;
+
+                $('table').find('input.sisa').each(function(){
+                    if(!isNaN($(this).val()))
+                        {grandTotal += parseInt($(this).val());
+                    }
+                });
+
+                if(isNaN(grandTotal))
+                grandTotal = 0;
+                grand_total.val(grandTotal);
+            })
+        })
+    })
+
     $("#formsubmit").on('submit', function (event) {
         event.preventDefault();
 
-        // var dikirim     = $('input[name^="dikirim[]"]').map(function(){return $(this).val();}).get();
-        // var diterima    = $('input[name^="diterima[]"]').map(function(){return $(this).val();}).get();
-
-        // for(var i = 0; i < dikirim.length; i++)
-        // {
-        //     var hasil = dikirim[i] - diterima[i];
-        //     console.log(hasil);
-        // } 
-
-        let dikirim         = $('input[name^="dikirim[]"]').map(function(){return $(this).val();}).get();
-        let diterima        = $('input[name^="diterima[]"]').map(function(){return $(this).val();}).get();
+        let diterima         = $('input[name^="diterima[]"]').map(function(){return $(this).val();}).get();
+        // let diterima        = $('input[name^="diterima[]"]').map(function(){return $(this).val();}).get();
+        let jlm_kirim        = $('#userTable tr').find("td:eq(4)").text(); //Mengambil Nilai Permintaan
         let status          = $('#status').find('option').filter(':selected').val();
         let no_rpo          = $('#no_rpo').val();
         let tanggal         = $('#tanggal').val();
         let no_so           = $('#no_so').val();
         let no_do           = $('#no_do').val();
-        let kodepermintaan  = $('#select2').find('option').filter(':selected').val();
-        
-        console.log(kodepermintaan);
+        let kodepermintaan  = $('#select2').find('option').filter(':selected').val(); 
+
+        var jumlah_rslt = $('#sisa span').text();
 
         $.ajax({
             url: '/Pag3/Penerimaan',
@@ -289,7 +289,6 @@
                 no_so: no_so,
                 no_do: no_do,
                 kodepermintaan: kodepermintaan,
-                dikirim:dikirim,
                 diterima:diterima,
             },
             success: function(res){

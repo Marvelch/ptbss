@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SubTipeModel;
+use App\TipeModel;
 use Illuminate\Http\Request;
 
 class SubTipeController extends Controller
@@ -14,7 +15,7 @@ class SubTipeController extends Controller
      */
     public function index()
     {
-        $SubTypes = SubTipeModel::all();
+        $SubTypes = TipeModel::all();
 
         return view('subtype.subtype')->with('SubTypes',$SubTypes);
     }
@@ -37,7 +38,16 @@ class SubTipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $SubType = SubTipeModel::create([
+                'tipeid'    => $request->idtipe,
+                'nama'      => $request->nama,
+                'status'      => $request->status,
+                'kode'      => $request->kode,
+        ]);
+
+        $SubType->save();
+
+        return redirect()->back();
     }
 
     /**
