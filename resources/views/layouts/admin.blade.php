@@ -9,8 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>PT BERKAT SAHABAT SEJATI</title>
+    <link rel="shortcut icon" href="{{asset('/img/icon.png')}}">
+    <title>PT BSS | INDONESIA</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -199,7 +199,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{url('Maintenance')}}">
                     <i class="fas fa-phone-alt"></i>
                     <span>Kontak</span></a>
             </li>

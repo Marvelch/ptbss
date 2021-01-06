@@ -144,7 +144,7 @@
                 @foreach ($KartuStok as $Kartu)
                 <tr class="details">
                     <td>{{$Kartu->kode_product}}</td>	
-                    <td>{{$Kartu->tanggal}}</td>
+                    <td>@php echo date('d-m-Y', strtotime($Kartu->tanggal)); @endphp</td>
                     <td>{{$Kartu->kode_transaksi}}</td>
                     <td>{{$Kartu->keterangan}}</td>
                     <td>{{$Kartu->masuk}}</td>
@@ -154,7 +154,7 @@
                 @endforeach
         </table>
         <table cellpadding="0" cellspacing="0">
-            <td style="padding-left: 80%;"><u><b>Grand Total</b></u> <span><b style="margin-left: 16%;">{{$total}}</b></span></td>
+            <td style="padding-left: 55%;"><u><b> Grand Total</b></u> <span><b style="margin-left: 10%;"> {{$total}}</b></span><span><b style="margin-left: 35;"> {{$keluar}}</b></span></td>
         </table>
     </div>
 </body>

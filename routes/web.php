@@ -71,6 +71,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('InvoiceTemp','InvoiceController@Store_All');
   });
 
+  Route::get('Maintenance','HomeController@Maintenance');
+
   // Route::get('/admin/settings/findAirName','PenerimaanController@SupplierJson');
   Route::get('/channels/fetch/{id}','PenerimaanController@Jsonsupplier');
 });

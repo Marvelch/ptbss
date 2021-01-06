@@ -70,12 +70,14 @@ class KartuStokController extends Controller
 
         foreach($KartuStok as $Kartu)
         {
-            $totalsaldo[] = $Kartu->saldo;
+            $totalsaldo[] = $Kartu->masuk;
+            $TotalKeluar[] = $Kartu->keluar;
         }
 
         $total = array_sum($totalsaldo);
+        $keluar = array_sum($TotalKeluar);
 
-    	$pdf = PDF::loadview('kartustok.kartustok_pdf',compact('results','permintaans','hasils','KartuStok','total'));
+    	$pdf = PDF::loadview('kartustok.kartustok_pdf',compact('results','permintaans','hasils','KartuStok','total','keluar'));
     	return $pdf->stream();
     }
 

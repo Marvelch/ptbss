@@ -11,6 +11,8 @@ class KartuStokModel extends Model
     protected $fillable = [
         'kode_product',
         'tanggal',
+        'namatoko',
+        'telepon',
         'kode_transaksi',
         'masuk',
         'keluar',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\InvoiceDetailModel;
 use App\InvoiceModel;
 use App\KartuStokModel;
+use App\Product;
 use App\ProductModel;
 use App\SementaraModel;
 use Illuminate\Http\Request;
@@ -71,7 +72,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = Auth::id();
+       $userId = Auth::id();
 
        $product_id = $request->input('product_id');
 
@@ -91,44 +92,67 @@ class InvoiceController extends Controller
 
     public function Store_All(Request $request)
     {
-        // $Inv = InvoiceModel::create([
-        //     'no_invoice'    => $request->kode,
-        //     'tanggal'       => $request->tanggal,
-        //     'keterangan'    => $request->keterangan,
-        //     'sub_total'     => $request->sub_total,
-        // ]);
+        $userId = Auth::id();
+
+        $Inv = InvoiceModel::create([
+            'no_invoice'    => $request->kode,
+            'tanggal'       => $request->tanggal,
+            'keterangan'    => $request->keterangan,
+            'sub_total'     => $request->sub_total,
+        ]);
 
         $looping = count($request->product_id);
-        
-        for($i=0;$i<$looping;$i++)
-        {
+
+        // Mengambil data stok dari tabel product 
+        for($i=0;$i<count($request->product_id);$i++){
             $stokbarang[] = ProductModel::where('id',$request->product_id[$i])->get();
-
-            // $InvDetail = InvoiceDetailModel::create([
-            //     'rel_no_invoice'    => $request->kode,
-            //     'jumlah'            => $request->jumlah[$i],
-            //     'harga'             => $request->harga[$i],
-            //     'total'             => $request->harga[$i] * $request->jumlah[$i],
-            //     'product_id'        => $request->product_id[$i],
-            // ]);
-
-            // KartuStokModel::create([
-            //     'kode_product'      => $request->product_id[$i],
-            //     'tanggal'           => date('Y-m-d'),
-            //     'kode_transaksi'    => $request->kode,
-            //     'masuk'             => "0",
-            //     'keluar'            => $request->jumlah[$i],
-            //     'saldo'             => $request->jumlah[$i],
-            // ]);
         }
 
-        return $stokbarang;
-        // $InvDetail->save();
+        // Filtering Stok Barang 
+        foreach($stokbarang as $stoks)
+        {
+            $ListStok[] = $stoks[0]->stok;
+        }
 
-        // $Inv->save();
+        for($i=0;$i<$looping;$i++)
+        {
+            $InvDetail = InvoiceDetailModel::create([
+                'rel_no_invoice'    => $request->kode,
+                'jumlah'            => $request->jumlah[$i],
+                'harga'             => $request->harga[$i],
+                'total'             => $request->harga[$i] * $request->jumlah[$i],
+                'product_id'        => $request->product_id[$i],
+            ]);
 
-        // Session::flash('success', 'File has been uploaded successfully!');
-        // return response()->json(['url'=>url('/Pag6/Invoice')]);
+            $Kartu = KartuStokModel::create([
+                'kode_product'      => $request->productkode[$i],
+                'tanggal'           => date('Y-m-d'),
+                'kode_transaksi'    => $request->kode,
+                'masuk'             => "0",
+                'namatoko'          => $request->namatoko,
+                'telepon'           => $request->telepon,
+                'keluar'            => $request->jumlah[$i],
+                'keterangan'        => $request->keterangan,
+                'saldo'             => $ListStok[$i] - $request->jumlah[$i],
+            ]);
+
+            ProductModel::where('id',$request->product_id[$i])->update([
+                'stok'              => $ListStok[$i] - $request->jumlah[$i],
+            ]);
+        }
+
+        $Inv->save();
+
+        $InvDetail->save();
+
+        $Kartu->save();
+
+        SementaraModel::where('iduser',$userId)
+                        ->where('idproduct',0)
+                        ->where('idsupplier',0)->delete();
+
+        // // Session::flash('success', 'File has been uploaded successfully!');
+        return response()->json(['url'=>url('/Pag6/Invoice'),'success'=>'Ajax request submitted successfully']);
     }
 
     /**
