@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label for="">No Invoice</label>
                             @foreach ($kode as $kode_id)
-                            <input type="text" id="kode"
+                            <input type="text" name="kode" id="kode"
                                 value="@php echo substr(date('Y'),2).'-T'.date('m').'/'.sprintf('%04d', $kode_id);  @endphp"
                                 class="kode form-control">
                             @endforeach
@@ -102,7 +102,7 @@
                                         </div>
                                     </td>
                                     <td><input type="number" id="qty[]" name="qty[]" class="qty form-control"
-                                            placeholder="Jumlah Barang" max="{{$hsl[0]->stok}}"></td>
+                                            placeholder="Jumlah Barang" max="{{$hsl[0]->stok}}" autocomplete="off"></td>
                                     <td><span id="stock" class="stock">{{$hsl[0]->stok}}</span></td>
                                     <td>Rp <span id="total_price" name="total_price[]" class="total_price">Rp. 0</span>
                                     </td>

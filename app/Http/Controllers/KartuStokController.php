@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\KartuStokModel;
 use App\PermintaanModel;
 use App\Product;
 use Illuminate\Http\Request;
@@ -40,8 +41,11 @@ class KartuStokController extends Controller
 
         $permintaans = PermintaanModel::where('product_id',$ids)->get();
 
+        $KartuStok = KartuStokModel::where('kode_product',$kode)->get();
+
         return view('kartustok.print')->with('prints',$prints)
-                                      ->with('permintaans',$permintaans);
+                                      ->with('permintaans',$permintaans)
+                                      ->with('KartuStok',$KartuStok);
     }
 
     public function cetak_pdf(Request $request,$id)
@@ -62,7 +66,16 @@ class KartuStokController extends Controller
             $hasils += $permintaan->jumlah;
         }
 
-    	$pdf = PDF::loadview('kartustok.kartustok_pdf',compact('results','permintaans','hasils'));
+        $KartuStok = KartuStokModel::where('kode_product',$id)->get();
+
+        foreach($KartuStok as $Kartu)
+        {
+            $totalsaldo[] = $Kartu->saldo;
+        }
+
+        $total = array_sum($totalsaldo);
+
+    	$pdf = PDF::loadview('kartustok.kartustok_pdf',compact('results','permintaans','hasils','KartuStok','total'));
     	return $pdf->stream();
     }
 

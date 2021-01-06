@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Keterangan</label>
-                                    <textarea name="alamat" id="alamat" cols="30" rows="2" class="form-control"
+                                    <textarea name="keterangan" id="keterangan" cols="30" rows="2" class="form-control"
                                         value=""></textarea>
                                 </div>
                                 <div class="form-group">
@@ -141,10 +141,8 @@
     var tglpermintaan;
     var jumlah;
     var supplier_id;
-    var product_id;
     var diterima;
     var jmlh_kirim;
-    var sisar;
     var num = 0;
 
     $.ajaxSetup({
@@ -187,17 +185,19 @@
                         kodepermintaan = response[0]['data'][i].kodepermintaan;
                         tglpermintaan = response[0]['data'][i].tglpermintaan;
                         jumlah = response[0]['data'][i].jumlah;
+                        kodeproduct = response[1][i]['ex'][0].kode;
+                        idproducts = response[1][i]['ex'][0].id;
                         nama_product = response[1][i]['ex'][0].nama;
                         supplier_id = response[0]['data'][i].supplier_id;
                         // nama = response[0]['data'][i].nama;
                         var tr_str = "<tr>" +
                             "<td>" + (i + 1) + "</td>" +
                             "<td>" + kodepermintaan + "</td>" +
-                            "<td>" + nama_product + "</td>" +
+                            "<td>" + nama_product + "<input type='hidden' name='kodeproduct[]' value='"+kodeproduct+"'></input><input type='hidden' name='idproducts[]' value='"+idproducts+"'></input></td>" +
                             "<td>" + tglpermintaan + "</td>" +
                             "<td>" + jumlah + "</td>" +
                             "<td><input type='text' autocomplete='off' name='diterima[]' id='diterima[]' class='diterima form-control'></td>" +
-                            "<td><input type='text' id='sisa' name='sisa"+ i + "' class='sisa form-control' disabled=''></td>" +
+                            "<td><input type='text' id='sisa[]' name='sisa"+ i +"' class='sisa form-control' disabled=''></td>" +
                             "</tr>";
                         $("#userTable tbody").append(tr_str);
                     }
@@ -268,7 +268,7 @@
 
         let diterima         = $('input[name^="diterima[]"]').map(function(){return $(this).val();}).get();
         // let diterima        = $('input[name^="diterima[]"]').map(function(){return $(this).val();}).get();
-        let jlm_kirim        = $('#userTable tr').find("td:eq(4)").text(); //Mengambil Nilai Permintaan
+        let jumlahs         = $('#userTable tr').find("td:eq(4)").text(); //Mengambil Nilai Permintaan
         let status          = $('#status').find('option').filter(':selected').val();
         let no_rpo          = $('#no_rpo').val();
         let tanggal         = $('#tanggal').val();
@@ -276,7 +276,10 @@
         let no_do           = $('#no_do').val();
         let kodepermintaan  = $('#select2').find('option').filter(':selected').val(); 
 
-        var jumlah_rslt = $('#sisa span').text();
+        let sisabarang      = $('input[id^="sisa[]"]').map(function(){return $(this).val();}).get();
+        let idproducts      = $('input[name^="idproducts[]"]').map(function(){return $(this).val();}).get();
+        let keterangan      = $('#keterangan').val();
+        let kodeproduct     = $('input[name^="kodeproduct[]"]').map(function(){return $(this).val();}).get();
 
         $.ajax({
             url: '/Pag3/Penerimaan',
@@ -288,8 +291,12 @@
                 tanggal: tanggal,
                 no_so: no_so,
                 no_do: no_do,
+                jumlah: sisabarang,
+                kodeproduct: kodeproduct,
                 kodepermintaan: kodepermintaan,
                 diterima:diterima,
+                idproducts: idproducts,
+                keterangan: keterangan,
             },
             success: function(res){
                 window.location=res.url;

@@ -41,32 +41,32 @@
                                 <th scope="col">Kode Permintaan</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Kode Produk</th>
-                                <th scope="col">Nama Barang</th>
                                 <th scope="col">Keterangan</th>
                                 <th scope="col">Keluar</th>
                                 <th scope="col">Masuk</th>
                                 <th scope="col">Saldo</th>
                             </tr>
                         </thead>
-                        @foreach($permintaans as $permintaan)
+                        {{-- @foreach($permintaans as $key => $permintaan) --}}
+                        @foreach ($KartuStok as $Kartu)
                         <tbody>
                             <tr>
-                                <td>{{$permintaan->kodepermintaan}}</td>
-                                <td>@php echo date("d-m-Y", strtotime($permintaan->tglpermintaan)); @endphp</td>
-                                <td>{{$prints[0]->kode}}</td>
-                                <td>{{$prints[0]->nama}}</td>
-                                <td>// Keterangan</td>
-                                <td>{{$permintaan->dikirim}}</td>
-                                <td>{{$permintaan->diterima}}</td>
-                                <td>{{$permintaan->jumlah}}</td>
+                                <td>{{$Kartu->kode_product}}</td>
+                                <td>@php echo date("d-m-Y", strtotime($Kartu->tanggal)); @endphp</td>
+                                <td>{{$Kartu->kode_transaksi}}</td>
+                                <td>{{$Kartu->keterangan}}</td>
+                                <td>{{$Kartu->masuk}}</td>
+                                <td>{{$Kartu->keluar}}</td>
+                                <td>{{$Kartu->saldo}}</td>
                             </tr>
                         </tbody>
                         @endforeach
+                        {{-- @endforeach --}}
                     </table>
                     <div class="form-group">
                         <div class="d-flex">
-                            <div class="p-2"><a href="{{url('/Pag4/KartuStok')}}" class="btn btn-primary">Batal</a></div>
-                            <div class="p-2"><a href="/Pag4/pegawai/cetak_pdf/{{$prints[0]->kode}}" class="btn btn-primary" target="_blank">Print PDF</a></div>
+                            <div class="p-2"><a href="{{url('/Pag4/KartuStok')}}" class="btn btn-primary"><i class="fas fa-times"></i> Batal</a></div>
+                            <div class="p-2"><a href="/Pag4/pegawai/cetak_pdf/{{$prints[0]->kode}}" class="btn btn-primary" target="_blank"><i class="fas fa-print"></i> Print</a></div>
                         </div>
                     </div>
                 </div>

@@ -23,7 +23,6 @@
   </head>
   <style>
     .shadow-btn{
-      border: 1px solid;
       padding: 25px;
       box-shadow: 5px 10px #888888;
     }

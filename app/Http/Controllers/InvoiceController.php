@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\InvoiceDetailModel;
 use App\InvoiceModel;
+use App\KartuStokModel;
 use App\ProductModel;
 use App\SementaraModel;
 use Illuminate\Http\Request;
@@ -90,31 +91,44 @@ class InvoiceController extends Controller
 
     public function Store_All(Request $request)
     {
-        $Inv = InvoiceModel::create([
-            'no_invoice'    => $request->kode,
-            'tanggal'       => $request->tanggal,
-            'keterangan'    => $request->keterangan,
-            'sub_total'     => $request->sub_total,
-        ]);
+        // $Inv = InvoiceModel::create([
+        //     'no_invoice'    => $request->kode,
+        //     'tanggal'       => $request->tanggal,
+        //     'keterangan'    => $request->keterangan,
+        //     'sub_total'     => $request->sub_total,
+        // ]);
 
         $looping = count($request->product_id);
         
         for($i=0;$i<$looping;$i++)
         {
-            $InvDetail = InvoiceDetailModel::create([
-                'rel_no_invoice'    => $request->kode,
-                'jumlah'            => $request->jumlah[$i],
-                'harga'             => $request->harga[$i],
-                'total'             => $request->harga[$i] * $request->jumlah[$i],
-                'product_id'        => $request->product_id[$i],
-            ]);
+            $stokbarang[] = ProductModel::where('id',$request->product_id[$i])->get();
+
+            // $InvDetail = InvoiceDetailModel::create([
+            //     'rel_no_invoice'    => $request->kode,
+            //     'jumlah'            => $request->jumlah[$i],
+            //     'harga'             => $request->harga[$i],
+            //     'total'             => $request->harga[$i] * $request->jumlah[$i],
+            //     'product_id'        => $request->product_id[$i],
+            // ]);
+
+            // KartuStokModel::create([
+            //     'kode_product'      => $request->product_id[$i],
+            //     'tanggal'           => date('Y-m-d'),
+            //     'kode_transaksi'    => $request->kode,
+            //     'masuk'             => "0",
+            //     'keluar'            => $request->jumlah[$i],
+            //     'saldo'             => $request->jumlah[$i],
+            // ]);
         }
 
-        $InvDetail->save();
-        $Inv->save();
+        return $stokbarang;
+        // $InvDetail->save();
 
-        Session::flash('success', 'File has been uploaded successfully!');
-        return response()->json(['url'=>url('/Pag6/Invoice')]);
+        // $Inv->save();
+
+        // Session::flash('success', 'File has been uploaded successfully!');
+        // return response()->json(['url'=>url('/Pag6/Invoice')]);
     }
 
     /**
