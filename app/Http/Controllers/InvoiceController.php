@@ -92,6 +92,19 @@ class InvoiceController extends Controller
 
     public function Store_All(Request $request)
     {
+        $this->validate($request, [
+            'namatoko' => 'required',
+            'telepon' => 'required|min:5|max:13',
+            'keterangan' => 'required',
+            'qty' => 'required'
+        ],
+        [
+            'namatoko.required'     => 'Kolom Nama Pembeli Tidak Boleh Kosong !',
+            'telepon.required'      => 'Kolom No Telepon Bermasalah !',
+            'keterangan.required'   => 'Kolom Keterangan Tidak Boleh Kosong !',
+            'qty.required'          => '* Periksa Kembali Jumlah kolom !',
+        ]);
+
         $userId = Auth::id();
 
         $Inv = InvoiceModel::create([
@@ -118,9 +131,9 @@ class InvoiceController extends Controller
         {
             $InvDetail = InvoiceDetailModel::create([
                 'rel_no_invoice'    => $request->kode,
-                'jumlah'            => $request->jumlah[$i],
+                'jumlah'            => $request->qty[$i],
                 'harga'             => $request->harga[$i],
-                'total'             => $request->harga[$i] * $request->jumlah[$i],
+                'total'             => $request->harga[$i] * $request->qty[$i],
                 'product_id'        => $request->product_id[$i],
             ]);
 
@@ -131,13 +144,13 @@ class InvoiceController extends Controller
                 'masuk'             => "0",
                 'namatoko'          => $request->namatoko,
                 'telepon'           => $request->telepon,
-                'keluar'            => $request->jumlah[$i],
+                'keluar'            => $request->qty[$i],
                 'keterangan'        => $request->keterangan,
-                'saldo'             => $ListStok[$i] - $request->jumlah[$i],
+                'saldo'             => $ListStok[$i] - $request->qty[$i],
             ]);
 
             ProductModel::where('id',$request->product_id[$i])->update([
-                'stok'              => $ListStok[$i] - $request->jumlah[$i],
+                'stok'              => $ListStok[$i] - $request->qty[$i],
             ]);
         }
 

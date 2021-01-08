@@ -137,8 +137,9 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Permintaan :</h6>
-                    <a class="collapse-item" href="{{url('permintaan')}}">Tambah Permintaan</a>
+                        <a class="collapse-item" href="{{url('permintaan')}}">Tambah Permintaan</a>
                         <a class="collapse-item" href="{{url('daftar/permintaan')}}">Data Permintaan</a>
+                        <a class="collapse-item" href="{{url('/Pag2/Cetak_Pdf')}}">Cetak Laporan</a>
                     </div>
                 </div>
             </li>

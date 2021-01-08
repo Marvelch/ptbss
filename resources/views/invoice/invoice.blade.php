@@ -50,6 +50,7 @@
                             <textarea class="form-control" cols="30" rows="2" name="keterangan" id="keterangan"
                                 autocomplete="off"></textarea>
                         </div>
+                        <small><div class="alert-message" id="keterangan_error" style="color:red;"></div></small>
                     </div>
                 </div>
             </div>
@@ -71,11 +72,13 @@
                             <input type="text" name="namatoko" id="namatoko" class="form-control" value=""
                                 autocomplete="off">
                         </div>
+                        <small><div class="alert-message" id="namatoko_error" style="padding-bottom: 20px; color:red;"></div></small>
                         <div class="form-group">
                             <label for="">No Telepon</label>
                             <input type="text" name="telepon" id="telepon" class="form-control" value=""
                                 autocomplete="off">
                         </div>
+                        <small><div class="alert-message" id="telepon_error"  style="color:red;"></div></small>
                     </div>
                 </div>
             </div>
@@ -128,7 +131,8 @@
                                         </div>
                                     </td>
                                     <td><input type="number" id="qty[]" name="qty[]" class="qty form-control"
-                                            placeholder="Jumlah Barang" max="{{$hsl[0]->stok}}" autocomplete="off"></td>
+                                            placeholder="Jumlah Barang" max="{{$hsl[0]->stok}}" autocomplete="off" min="1" max="{{$hsl[0]->stok}}">
+                                    </td>
                                     <td><span id="stock" class="stock">{{$hsl[0]->stok}}</span></td>
                                     <td>Rp <span id="total_price" name="total_price[]" class="total_price">Rp. 0</span>
                                     </td>
@@ -304,7 +308,7 @@
         let product_id = $("input[name='idprod[]']").map(function () {
             return $(this).val();
         }).get();
-        let jumlah = $("input[name='qty[]']").map(function () {
+        let qty = $("input[name='qty[]']").map(function () {
             return $(this).val();
         }).get();
         let harga = $("input[name='harga[]']").map(function () {
@@ -324,17 +328,22 @@
                 keterangan: Keterangan,
                 sub_total: sub_total,
                 product_id: product_id,
-                jumlah: jumlah,
+                qty: qty,
                 namatoko: namatoko,
                 telepon: telepon,
                 productkode: productkode,
                 harga: harga,
             },
-            success: function (res) {
-                window.location = res.url;
+            success: function (response) {
+                window.location = response.url;
                 $('div.flash-message').html(data);
-                $('.success').text(res.success);
-            }
+                $('.success').text(response.success);
+            },
+            error: function(response) {
+              $('#keterangan_error').text(response.responseJSON.errors.keterangan);
+              $('#telepon_error').text(response.responseJSON.errors.telepon);
+              $('#namatoko_error').text(response.responseJSON.errors.namatoko);
+           }
         });
     });
 </script>

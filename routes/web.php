@@ -45,6 +45,11 @@ Route::group(['middleware' => 'admin'], function () {
   Route::get('/live_search/action', 'PermintaanController@action')->name('live_search.action');
 
   Route::post('/category/getCategory/','PermintaanController@getCategory')->name('category.getCategory');
+  
+  Route::group(['prefix' => 'Pag2'], function(){
+      Route::get('Cetak_Pdf','PermintaanController@Cetakpdf');
+      Route::get('Laporan/{id}','PermintaanController@PermintaanLaporan');
+  });
 
   Route::group(['prefix' => 'Pag3'], function(){
       Route::resource('Penerimaan','PenerimaanController');
@@ -58,7 +63,6 @@ Route::group(['middleware' => 'admin'], function () {
       Route::resource('KartuStok','KartuStokController');
       Route::get('Print','KartuStokController@cetak');
       Route::get('/pegawai/cetak_pdf/{id}', 'KartuStokController@cetak_pdf');
-      // Route::get('Testing','KartuStokController@cetak_pdf');
   });
 
   Route::group(['prefix' => 'Pag5'], function(){

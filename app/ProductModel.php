@@ -11,8 +11,4 @@ class ProductModel extends Model
         'nama','id','harga','stok','kode','type_id','status','subid'
     ];
 
-    public function PenerimaanModel()
-    {
-        return $this->hasMany('App\PenerimaanModel');
-    }
 }

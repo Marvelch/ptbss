@@ -48,8 +48,10 @@ class KartuStokController extends Controller
                                       ->with('KartuStok',$KartuStok);
     }
 
-    public function cetak_pdf(Request $request,$id)
+    public function cetak_pdf(Request $request)
     {
+        $id = $request->kodeunique();
+        
         $results = ProductModel::where('kode',$id)->get();
 
         foreach($results as $result)

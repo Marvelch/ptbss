@@ -46,6 +46,7 @@
                                     <label for="">Keterangan</label>
                                     <textarea name="keterangan" id="keterangan" cols="30" rows="2" class="form-control"
                                         value=""></textarea>
+                                        <small><div class="alert-message" id="keterangan_error" style="color:red; padding-top: 10px;"></div></small>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Alamat</label>
@@ -72,11 +73,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">No Sales Order (SO)</label>
-                                    <input type="text" name="" id="no_so" autocomplete="off" class="form-control">
+                                    <input type="text" name="no_so" id="no_so" autocomplete="off" class="form-control">
+                                    <small><div class="alert-message" id="no_so_error" style="color:red; padding-top: 10px;"></div></small>
                                 </div>
                                 <div class="form-group">
                                     <label for="">No Delivery Order (DO)</label>
-                                    <input type="text" name="" id="no_do" autocomplete="off"     class="form-control">
+                                    <input type="text" name="no_do" id="no_do" autocomplete="off" class="form-control">
+                                    <small><div class="alert-message" id="no_do_error" style="color:red; padding-top: 10px;"></div></small>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +199,7 @@
                             "<td>" + nama_product + "<input type='hidden' name='kodeproduct[]' value='"+kodeproduct+"'></input><input type='hidden' name='idproducts[]' value='"+idproducts+"'></input></td>" +
                             "<td>" + tglpermintaan + "</td>" +
                             "<td>" + jumlah + "</td>" +
-                            "<td><input type='text' autocomplete='off' name='diterima[]' id='diterima[]' class='diterima form-control'></td>" +
+                            "<td><input type='text' autocomplete='off' name='diterima[]' id='diterima[]' class='diterima form-control' min='1' max='"+jumlah+"'></td>" +
                             "<td><input type='text' id='sisa[]' name='sisa"+ i +"' class='sisa form-control' disabled=''></td>" +
                             "</tr>";
                         $("#userTable tbody").append(tr_str);
@@ -301,6 +304,11 @@
             success: function(res){
                 window.location=res.url;
             }
+        //     error: function(response) {
+        //       $('#keterangan_error').text(response.responseJSON.errors.keterangan);
+        //       $('#no_so_error').text(response.responseJSON.errors.sales_order);
+        //       $('#no_do_error').text(response.responseJSON.errors.delivery_order);
+        //    }
         });
     });
 

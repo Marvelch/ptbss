@@ -53,6 +53,7 @@
         border-bottom: 1px solid rgb(0, 0, 0);
         font-weight: bold;
         border: 1px solid rgb(136, 136, 136);
+        text-align: center;
     }
     
     .invoice-box table tr.details td {

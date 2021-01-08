@@ -97,6 +97,16 @@ class PenerimaanController extends Controller
      */
     public function store(Request $request)
     {
+        // $this->validate($request, [
+        //     'no_so'       => 'required',
+        //     'delivery_order'    => 'required',
+        //     'keterangan'        => 'required',
+        // ],
+        // [
+        //     'no_so.required'      => 'Kolom Sales Order Tidak Boleh Kosong !',
+        //     'delivery_order.required'   => 'Kolom Delivery Order Tidak Boleh Kosong !',
+        //     'keterangan.required'       => 'Kolom Keterangan Tidak Boleh Kosong !',
+        // ]);
 
         $ids = PermintaanModel::where('kodepermintaan',$request->kodepermintaan)->get();
 
