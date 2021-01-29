@@ -9,8 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>PT BERKAT SAHABAT SEJATI</title>
+    <link rel="shortcut icon" href="{{asset('/img/icon.png')}}">
+    <title>PT BSS | INDONESIA</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -137,8 +137,9 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Permintaan :</h6>
-                    <a class="collapse-item" href="{{url('permintaan')}}">Tambah Permintaan</a>
+                        <a class="collapse-item" href="{{url('permintaan')}}">Tambah Permintaan</a>
                         <a class="collapse-item" href="{{url('daftar/permintaan')}}">Data Permintaan</a>
+                        <a class="collapse-item" href="{{url('/Pag2/Cetak_Pdf')}}">Cetak Laporan</a>
                     </div>
                 </div>
             </li>
@@ -199,7 +200,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{url('Maintenance')}}">
                     <i class="fas fa-phone-alt"></i>
                     <span>Kontak</span></a>
             </li>

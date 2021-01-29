@@ -17,7 +17,7 @@
     @endif
 
    <div class="row">
-    <div class="col-lg-12 mb-4">
+    <div class="col-lg-6 mb-4">
         <!-- Input Products -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -27,7 +27,7 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="">Pilih Barang</label>
                             <select name="kodebarang" id="" class="form-control">
@@ -38,7 +38,7 @@
                             </select>
                         </div>
                         <div class="form-group pt-3">
-                            <button type="submit" class="btn btn-primary">Lihat Barang</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-hdd"></i> Cetak Data</button>
                         </div>
                     </div>
                 </div>

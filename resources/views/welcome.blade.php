@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>PT BERKAT SAHABAT SEJATI</title>
+    <title>PT BSS | INDONESIA</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Place favicon.ico in the root directory -->
@@ -23,7 +23,6 @@
   </head>
   <style>
     .shadow-btn{
-      border: 1px solid;
       padding: 25px;
       box-shadow: 5px 10px #888888;
     }
@@ -105,9 +104,9 @@
                 <div class="buttons">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/home') }}" rel="nofollow" class="shadow-btn button button-lg radius-5 wow fadeInUp" data-wow-delay=".7s"><span>Home</span><i class="fab fa-telegram-plane" style="padding-left: 10%;"></i></a>
+                            <a href="{{ url('/admin/home') }}" rel="nofollow" class="shadow-btn button button-lg radius-5 wow fadeInUp" data-wow-delay=".7s"><span class="pt-1"><b>KEMBALI</b></span></i></a>
                         @else
-                            <a href="{{ route('login') }}" rel="nofollow" class="shadow-btn button button-lg radius-5 wow fadeInUp" data-wow-delay=".7s"><span>Login</span><i class="fas fa-sign-in-alt" style="padding-left: 10%;"></i> </a>
+                            <a href="{{ route('login') }}" rel="nofollow" class="shadow-btn button button-lg radius-5 wow fadeInUp" data-wow-delay=".7s"><span class="pt-1"><b>LOGIN</b></span></a>
                         @endauth
                     @endif
                 </div>

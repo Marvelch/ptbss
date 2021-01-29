@@ -34,6 +34,8 @@
     
     .invoice-box table tr.top table td {
         padding-bottom: 20px;
+        border: 5px;
+        border-color: black;
     }
     
     .invoice-box table tr.top table td.title {
@@ -48,24 +50,27 @@
     
     .invoice-box table tr.heading td {
         background: #eee;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid rgb(0, 0, 0);
         font-weight: bold;
+        border: 1px solid rgb(136, 136, 136);
+        text-align: center;
     }
     
     .invoice-box table tr.details td {
         padding-bottom: 20px;
+        border: 1px solid rgb(136, 136, 136);
     }
     
     .invoice-box table tr.item td{
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid rgb(0, 0, 0);
     }
     
     .invoice-box table tr.item.last td {
-        border-bottom: none;
+        border-bottom: 10px;
     }
     
     .invoice-box table tr.total td:nth-child(2) {
-        border-top: 2px solid #eee;
+        border-top: 2px solid rgb(0, 0, 0);
         font-weight: bold;
     }
     
@@ -128,7 +133,6 @@
             </tr>
         </table>
         <table cellpadding="0" cellspacing="0">
-            
                 <tr class="heading">
                     <td>Kode Barang</td>
                     <td>Tanggal</td>
@@ -138,38 +142,20 @@
                     <td>Keluar</td>
                     <td>Saldo</td>
                 </tr>
-                @foreach ($permintaans as $permintaan)
+                @foreach ($KartuStok as $Kartu)
                 <tr class="details">
-                    @foreach ($results as $result)
-                    <td>
-                        {{$result->kode}}
-                    </td>
-                    @endforeach
-                    <td>
-                        @php
-                           echo date('d-m-Y', strtotime($permintaan->tglpermintaan)); 
-                        @endphp 
-                    </td>
-                    <td>
-                        {{$permintaan->kodepermintaan}}
-                    </td>
-                    <td>
-                        Keterangan
-                    </td>
-                    <td>
-                        {{$permintaan->jumlah}}
-                    </td>
-                    <td>
-                        Keluar
-                    </td>
-                    <td>
-                        {{$result->stok}}
-                    </td>
+                    <td>{{$Kartu->kode_product}}</td>	
+                    <td>@php echo date('d-m-Y', strtotime($Kartu->tanggal)); @endphp</td>
+                    <td>{{$Kartu->kode_transaksi}}</td>
+                    <td>{{$Kartu->keterangan}}</td>
+                    <td>{{$Kartu->masuk}}</td>
+                    <td>{{$Kartu->keluar}}</td>
+                    <td>{{$Kartu->saldo}}</td>
                 </tr>
                 @endforeach
         </table>
         <table cellpadding="0" cellspacing="0">
-            <td style="padding-left: 50%;"><u><b>Grand Total</b></u> <span><b style="margin-left: 16%;">{{$hasils}}</b></span></td>
+            <td style="padding-left: 55%;"><u><b> Grand Total</b></u> <span><b style="margin-left: 10%;"> {{$total}}</b></span><span><b style="margin-left: 35;"> {{$keluar}}</b></span></td>
         </table>
     </div>
 </body>

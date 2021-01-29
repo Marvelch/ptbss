@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\KartuStokModel;
 use App\PenerimaanModel;
 use App\Permintaan;
 use App\PermintaanHasMany;
@@ -96,6 +97,16 @@ class PenerimaanController extends Controller
      */
     public function store(Request $request)
     {
+        // $this->validate($request, [
+        //     'no_so'       => 'required',
+        //     'delivery_order'    => 'required',
+        //     'keterangan'        => 'required',
+        // ],
+        // [
+        //     'no_so.required'      => 'Kolom Sales Order Tidak Boleh Kosong !',
+        //     'delivery_order.required'   => 'Kolom Delivery Order Tidak Boleh Kosong !',
+        //     'keterangan.required'       => 'Kolom Keterangan Tidak Boleh Kosong !',
+        // ]);
 
         $ids = PermintaanModel::where('kodepermintaan',$request->kodepermintaan)->get();
 
@@ -104,17 +115,44 @@ class PenerimaanController extends Controller
                                         ->update([
                                             'status'     =>  "2",
                                             'diterima'   => $request->diterima[$key],
-                                            'sisa'       => $request->info[$key] - $request->diterima[$key],
+                                            'sisa'       => $request->jumlah[$key],
                                         ]);
         }
 
-       $simpan = PenerimaanModel::create([
+        $simpan = PenerimaanModel::create([
             'no_rpo'                => $request->no_rpo,
             'rel_kodepermintaan'    => $request->kodepermintaan,
             'tanggal'               => $request->tanggal,
             'sales_order'           => $request->no_so,
             'delivery_order'        => $request->no_do,      
         ]);
+
+        for($i = 0; $i < count($request->idproducts);$i++)
+        {
+            $stokbarang = ProductModel::where('id',$request->idproducts[$i])->get();
+
+            foreach($stokbarang as $stokhasil)
+            {
+                $laporan[] = $stokhasil->stok;
+            }
+
+            // Update data stok pada tabel kartu stok
+            KartuStokModel::create([
+                'kode_product'      =>  $request->kodeproduct[$i],
+                'tanggal'           =>  $request->tanggal,
+                'kode_transaksi'    =>  $request->no_rpo,
+                'masuk'             =>  $request->diterima[$i],
+                'keluar'            =>  "0",
+                'saldo'             =>  $laporan[$i] + $request->diterima[$i],
+                'keterangan'        =>  $request->keterangan,         
+            ]);
+
+            ProductModel::where('id',$request->idproducts[$i])->update([
+                'stok' => $laporan[$i] + $request->diterima[$i],
+            ]);
+
+
+        }
 
         $simpan->save();
 

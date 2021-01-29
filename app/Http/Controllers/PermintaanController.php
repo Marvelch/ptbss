@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Hamcrest\Arrays\IsArray;
 use App\PermintaanHasMany;
 use App\Product;
+use PDF;
 
 class PermintaanController extends Controller
 {
@@ -407,6 +408,65 @@ class PermintaanController extends Controller
 
       echo json_encode($data);
      }
+    }
+
+    public function PermintaanLaporan(Request $request, $id)
+    {
+
+        $PermintaanData = Permintaan::all();
+
+        foreach($PermintaanData as $IDs)
+        {
+            $Suppliers = SupplierModel::where('id',$IDs->supplier_id)->get();
+        }
+
+        foreach($PermintaanData as $IDs)
+        {
+            $Products = ProductModel::where('id',$IDs->product_id)->get();
+        }
+
+        $PermintaanData = Permintaan::where('kodepermintaan',$id)->get();
+
+        $KodePermintaan = $id;
+
+        // Mengambil data supplier dari master
+        foreach($PermintaanData as $Data)
+        {
+            $SupplierID = $Data->supplier_id;
+        }
+
+        $GetSupplier = SupplierModel::where('id',$SupplierID)->get();
+
+        foreach($PermintaanData as $Data)
+        {
+            $hasil[] = $Data->jumlah;
+        }
+
+        foreach($PermintaanData as $GrandData)
+        {
+            $GrandHasil[] = $GrandData->subtotal;
+        }
+
+        $Total = array_sum($hasil);
+
+        $GrandTotals = array_sum($GrandHasil);
+
+        $pdf = PDF::loadview('permintaan.laporan',compact('PermintaanData','Suppliers','KodePermintaan','GetSupplier','Total','GrandTotals'));
+    	return $pdf->stream();
+    }
+
+    public function Cetakpdf(Request $request)
+    {
+        $Permintaan = PermintaanModel::all();
+
+        foreach($Permintaan as $kode)
+        {
+            $unique[] =  $kode->kodepermintaan;
+        }
+
+        $KodeUnique = array_unique($unique);
+
+        return view('permintaan.cetak')->with('Permintaan',$Permintaan)->with('KodeUnique',$KodeUnique);
     }
 
 }
